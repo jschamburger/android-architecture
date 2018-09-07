@@ -25,6 +25,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
 
@@ -33,7 +34,8 @@ import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
  */
 class AddEditTaskFragment : Fragment(), AddEditTaskContract.View {
 
-    override lateinit var presenter: AddEditTaskContract.Presenter
+    // TODO inject
+    override val presenter = AddEditTaskPresenter(arguments!!.getString(ARGUMENT_EDIT_TASK_ID) as String, Injection.provideTasksRepository(this.requireContext()), this, false)
     override var isActive = false
         get() = isAdded
 
@@ -57,7 +59,7 @@ class AddEditTaskFragment : Fragment(), AddEditTaskContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.addtask_frag, container, false)
         with(root) {
             title = findViewById(R.id.add_task_title)

@@ -31,7 +31,8 @@ import java.util.*
  */
 class TasksPresenter : TasksContract.Presenter, KoinComponent {
 
-    override lateinit var tasksView: TasksContract.View
+    override lateinit var view: TasksContract.View
+
     val tasksRepository : TasksRepository by inject()
 
     override var currentFiltering = TasksFilterType.ALL_TASKS
@@ -46,7 +47,7 @@ class TasksPresenter : TasksContract.Presenter, KoinComponent {
         // If a task was successfully added, show snackbar
         if (AddEditTaskActivity.REQUEST_ADD_TASK ==
                 requestCode && Activity.RESULT_OK == resultCode) {
-            tasksView.showSuccessfullySavedMessage()
+            view.showSuccessfullySavedMessage()
         }
     }
 
@@ -63,7 +64,7 @@ class TasksPresenter : TasksContract.Presenter, KoinComponent {
      */
     private fun loadTasks(forceUpdate: Boolean, showLoadingUI: Boolean) {
         if (showLoadingUI) {
-            tasksView.setLoadingIndicator(true)
+            view.setLoadingIndicator(true)
         }
         if (forceUpdate) {
             tasksRepository.refreshTasks()
@@ -97,11 +98,11 @@ class TasksPresenter : TasksContract.Presenter, KoinComponent {
                     }
                 }
                 // The view may not be able to handle UI updates anymore
-                if (!tasksView.isActive) {
+                if (!view.isActive) {
                     return
                 }
                 if (showLoadingUI) {
-                    tasksView.setLoadingIndicator(false)
+                    view.setLoadingIndicator(false)
                 }
 
                 processTasks(tasksToShow)
@@ -109,10 +110,10 @@ class TasksPresenter : TasksContract.Presenter, KoinComponent {
 
             override fun onDataNotAvailable() {
                 // The view may not be able to handle UI updates anymore
-                if (!tasksView.isActive) {
+                if (!view.isActive) {
                     return
                 }
-                tasksView.showLoadingTasksError()
+                view.showLoadingTasksError()
             }
         })
     }
@@ -123,7 +124,7 @@ class TasksPresenter : TasksContract.Presenter, KoinComponent {
             processEmptyTasks()
         } else {
             // Show the list of tasks
-            tasksView.showTasks(tasks)
+            view.showTasks(tasks)
             // Set the filter label's text.
             showFilterLabel()
         }
@@ -131,43 +132,43 @@ class TasksPresenter : TasksContract.Presenter, KoinComponent {
 
     private fun showFilterLabel() {
         when (currentFiltering) {
-            TasksFilterType.ACTIVE_TASKS -> tasksView.showActiveFilterLabel()
-            TasksFilterType.COMPLETED_TASKS -> tasksView.showCompletedFilterLabel()
-            else -> tasksView.showAllFilterLabel()
+            TasksFilterType.ACTIVE_TASKS -> view.showActiveFilterLabel()
+            TasksFilterType.COMPLETED_TASKS -> view.showCompletedFilterLabel()
+            else -> view.showAllFilterLabel()
         }
     }
 
     private fun processEmptyTasks() {
         when (currentFiltering) {
-            TasksFilterType.ACTIVE_TASKS -> tasksView.showNoActiveTasks()
-            TasksFilterType.COMPLETED_TASKS -> tasksView.showNoCompletedTasks()
-            else -> tasksView.showNoTasks()
+            TasksFilterType.ACTIVE_TASKS -> view.showNoActiveTasks()
+            TasksFilterType.COMPLETED_TASKS -> view.showNoCompletedTasks()
+            else -> view.showNoTasks()
         }
     }
 
     override fun addNewTask() {
-        tasksView.showAddTask()
+        view.showAddTask()
     }
 
     override fun openTaskDetails(requestedTask: Task) {
-        tasksView.showTaskDetailsUi(requestedTask.id)
+        view.showTaskDetailsUi(requestedTask.id)
     }
 
     override fun completeTask(completedTask: Task) {
         tasksRepository.completeTask(completedTask)
-        tasksView.showTaskMarkedComplete()
+        view.showTaskMarkedComplete()
         loadTasks(false, false)
     }
 
     override fun activateTask(activeTask: Task) {
         tasksRepository.activateTask(activeTask)
-        tasksView.showTaskMarkedActive()
+        view.showTaskMarkedActive()
         loadTasks(false, false)
     }
 
     override fun clearCompletedTasks() {
         tasksRepository.clearCompletedTasks()
-        tasksView.showCompletedTasksCleared()
+        view.showCompletedTasksCleared()
         loadTasks(false, false)
     }
 

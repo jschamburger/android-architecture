@@ -16,8 +16,10 @@
 
 package com.example.android.architecture.blueprints.todoapp
 
-interface BasePresenter {
+interface BasePresenter<T> {
 
     fun start()
+
+    var view: T
 
 }

@@ -30,6 +30,7 @@ import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTa
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailActivity
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
+import org.koin.android.ext.android.inject
 import java.util.*
 
 /**
@@ -37,7 +38,7 @@ import java.util.*
  */
 class TasksFragment : Fragment(), TasksContract.View {
 
-    override var presenter: TasksContract.Presenter = TasksPresenter().apply { tasksView = this@TasksFragment }
+    override val presenter by inject<TasksContract.Presenter>()
 
     override var isActive: Boolean = false
         get() = isAdded
@@ -70,6 +71,7 @@ class TasksFragment : Fragment(), TasksContract.View {
 
     override fun onResume() {
         super.onResume()
+        presenter.view = this
         presenter.start()
     }
 

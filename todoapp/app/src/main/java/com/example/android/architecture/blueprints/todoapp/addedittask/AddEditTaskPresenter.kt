@@ -37,10 +37,6 @@ class AddEditTaskPresenter(
         override var isDataMissing: Boolean
 ) : AddEditTaskContract.Presenter, TasksDataSource.GetTaskCallback {
 
-    init {
-        addTaskView.presenter = this
-    }
-
     override fun start() {
         if (taskId != null && isDataMissing) {
             populateTask()

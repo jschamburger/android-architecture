@@ -21,14 +21,10 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.CheckBox
 import android.widget.TextView
+import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskFragment
@@ -42,8 +38,10 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
     private lateinit var detailTitle: TextView
     private lateinit var detailDescription: TextView
     private lateinit var detailCompleteStatus: CheckBox
-    
-    override lateinit var presenter: TaskDetailContract.Presenter
+
+    // TODO Inject
+    override val presenter = TaskDetailPresenter(arguments!!.get(ARGUMENT_TASK_ID) as String, Injection.provideTasksRepository(this.requireContext()),
+            this)
 
     override var isActive: Boolean = false
         get() = isAdded
@@ -160,7 +158,7 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
 
     companion object {
 
-        private val ARGUMENT_TASK_ID = "TASK_ID"
+        val ARGUMENT_TASK_ID = "TASK_ID"
 
         private val REQUEST_EDIT_TASK = 1
 

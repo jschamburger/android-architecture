@@ -17,15 +17,17 @@ package com.example.android.architecture.blueprints.todoapp.taskdetail
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
+import org.koin.android.ext.android.inject
 
 /**
  * Displays task details screen.
  */
 class TaskDetailActivity : AppCompatActivity() {
+
+    private val taskDetailFragment: TaskDetailFragment by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,14 +43,14 @@ class TaskDetailActivity : AppCompatActivity() {
         // Get the requested task id
         val taskId = intent.getStringExtra(EXTRA_TASK_ID)
 
-        val taskDetailFragment = supportFragmentManager
-                .findFragmentById(R.id.contentFrame) as TaskDetailFragment? ?:
-                TaskDetailFragment.newInstance(taskId).also {
-                    replaceFragmentInActivity(it, R.id.contentFrame)
+        supportFragmentManager
+                .findFragmentById(R.id.contentFrame) as TaskDetailFragment?
+                ?: taskDetailFragment.apply {
+                    arguments = Bundle().apply { putString(TaskDetailFragment.ARGUMENT_TASK_ID, taskId) }
                 }
-        // Create the presenter
-        TaskDetailPresenter(taskId, Injection.provideTasksRepository(applicationContext),
-                taskDetailFragment)
+                        .also {
+                            replaceFragmentInActivity(it, R.id.contentFrame)
+                        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

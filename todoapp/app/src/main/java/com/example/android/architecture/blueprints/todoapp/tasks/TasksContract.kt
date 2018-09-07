@@ -61,9 +61,7 @@ interface TasksContract {
         fun showFilteringPopUpMenu()
     }
 
-    interface Presenter : BasePresenter {
-
-        var tasksView: TasksContract.View
+    interface Presenter : BasePresenter<View> {
 
         var currentFiltering: TasksFilterType
 
