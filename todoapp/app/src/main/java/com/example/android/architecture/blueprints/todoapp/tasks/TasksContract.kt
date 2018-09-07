@@ -63,6 +63,8 @@ interface TasksContract {
 
     interface Presenter : BasePresenter {
 
+        var tasksView: TasksContract.View
+
         var currentFiltering: TasksFilterType
 
         fun result(requestCode: Int, resultCode: Int)

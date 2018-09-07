@@ -29,18 +29,14 @@ import java.util.*
  * Listens to user actions from the UI ([TasksFragment]), retrieves the data and updates the
  * UI as required.
  */
-class TasksPresenter(val tasksView: TasksContract.View)
-    : TasksContract.Presenter, KoinComponent {
+class TasksPresenter : TasksContract.Presenter, KoinComponent {
 
+    override lateinit var tasksView: TasksContract.View
     val tasksRepository : TasksRepository by inject()
 
     override var currentFiltering = TasksFilterType.ALL_TASKS
 
     private var firstLoad = true
-
-    init {
-        tasksView.presenter = this
-    }
 
     override fun start() {
         loadTasks(false)

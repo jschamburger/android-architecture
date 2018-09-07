@@ -29,6 +29,7 @@ import com.example.android.architecture.blueprints.todoapp.statistics.Statistics
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
+import org.koin.android.ext.android.inject
 
 class TasksActivity : AppCompatActivity() {
 
@@ -36,7 +37,7 @@ class TasksActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
 
-    private lateinit var tasksPresenter: TasksPresenter
+    private val tasksFragment: TasksFragment by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,26 +55,25 @@ class TasksActivity : AppCompatActivity() {
         }
         setupDrawerContent(findViewById(R.id.nav_view))
 
-        val tasksFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
-                as TasksFragment? ?: TasksFragment.newInstance().also {
+        supportFragmentManager.findFragmentById(R.id.contentFrame)
+                as TasksFragment? ?: tasksFragment.also {
             replaceFragmentInActivity(it, R.id.contentFrame)
         }
 
-        // Create the presenter
-        tasksPresenter = TasksPresenter(tasksFragment).apply {
-            // Load previously saved state, if available.
-            if (savedInstanceState != null) {
-                currentFiltering = savedInstanceState.getSerializable(CURRENT_FILTERING_KEY)
-                        as TasksFilterType
-            }
-        }
+//        tasksPresenter.apply {
+//            // Load previously saved state, if available.
+//            if (savedInstanceState != null) {
+//                currentFiltering = savedInstanceState.getSerializable(CURRENT_FILTERING_KEY)
+//                        as TasksFilterType
+//            }
+//        }
     }
 
-    public override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState.apply {
-            putSerializable(CURRENT_FILTERING_KEY, tasksPresenter.currentFiltering)
-        })
-    }
+//    public override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState.apply {
+//            putSerializable(CURRENT_FILTERING_KEY, tasksPresenter.currentFiltering)
+//        })
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {

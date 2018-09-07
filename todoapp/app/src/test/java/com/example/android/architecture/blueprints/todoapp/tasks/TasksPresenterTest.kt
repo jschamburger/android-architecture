@@ -38,7 +38,7 @@ class TasksPresenterTest {
 
     @Mock private lateinit var tasksRepository: TasksRepository
 
-    @Mock private lateinit var tasksView: TasksContract.View
+    @Mock private lateinit var view: TasksContract.View
 
     /**
      * [ArgumentCaptor] is a powerful Mockito API to capture argument values and use them to
@@ -56,25 +56,17 @@ class TasksPresenterTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        tasksPresenter = TasksPresenter(tasksView)
+        tasksPresenter = TasksPresenter().apply { tasksView = view }
 
         // The presenter won't update the view unless it's active.
-        `when`(tasksView.isActive).thenReturn(true)
+        `when`(view.isActive).thenReturn(true)
 
         // We start the tasks to 3, with one active and two completed
         tasks = Lists.newArrayList(Task("Title1", "Description1"),
                 Task("Title2", "Description2").apply { isCompleted = true },
                 Task("Title3", "Description3").apply { isCompleted = true })
     }
-
-    @Test fun createPresenter_setsThePresenterToView() {
-        // Get a reference to the class under test
-        tasksPresenter = TasksPresenter(tasksView)
-
-        // Then the presenter is set to the view
-        verify(tasksView).presenter = tasksPresenter
-    }
-
+    
     @Test fun loadAllTasksFromRepositoryAndLoadIntoView() {
         with(tasksPresenter) {
             // Given an initialized TasksPresenter with initialized tasks
@@ -88,12 +80,12 @@ class TasksPresenterTest {
         loadTasksCallbackCaptor.value.onTasksLoaded(tasks)
 
         // Then progress indicator is shown
-        val inOrder = inOrder(tasksView)
-        inOrder.verify(tasksView).setLoadingIndicator(true)
+        val inOrder = inOrder(view)
+        inOrder.verify(view).setLoadingIndicator(true)
         // Then progress indicator is hidden and all tasks are shown in UI
-        inOrder.verify(tasksView).setLoadingIndicator(false)
+        inOrder.verify(view).setLoadingIndicator(false)
         val showTasksArgumentCaptor = argumentCaptor<List<Task>>()
-        verify(tasksView).showTasks(capture(showTasksArgumentCaptor))
+        verify(view).showTasks(capture(showTasksArgumentCaptor))
         assertTrue(showTasksArgumentCaptor.value.size == 3)
     }
 
@@ -110,9 +102,9 @@ class TasksPresenterTest {
         loadTasksCallbackCaptor.value.onTasksLoaded(tasks)
 
         // Then progress indicator is hidden and active tasks are shown in UI
-        verify(tasksView).setLoadingIndicator(false)
+        verify(view).setLoadingIndicator(false)
         val showTasksArgumentCaptor = argumentCaptor<List<Task>>()
-        verify(tasksView).showTasks(capture(showTasksArgumentCaptor))
+        verify(view).showTasks(capture(showTasksArgumentCaptor))
         assertTrue(showTasksArgumentCaptor.value.size == 1)
     }
 
@@ -129,9 +121,9 @@ class TasksPresenterTest {
         loadTasksCallbackCaptor.value.onTasksLoaded(tasks)
 
         // Then progress indicator is hidden and completed tasks are shown in UI
-        verify(tasksView).setLoadingIndicator(false)
+        verify(view).setLoadingIndicator(false)
         val showTasksArgumentCaptor = argumentCaptor<List<Task>>()
-        verify(tasksView).showTasks(capture(showTasksArgumentCaptor))
+        verify(view).showTasks(capture(showTasksArgumentCaptor))
         assertTrue(showTasksArgumentCaptor.value.size == 2)
     }
 
@@ -140,7 +132,7 @@ class TasksPresenterTest {
         tasksPresenter.addNewTask()
 
         // Then add task UI is shown
-        verify(tasksView).showAddTask()
+        verify(view).showAddTask()
     }
 
     @Test fun clickOnTask_ShowsDetailUi() {
@@ -151,7 +143,7 @@ class TasksPresenterTest {
         tasksPresenter.openTaskDetails(requestedTask)
 
         // Then task detail UI is shown
-        verify(tasksView).showTaskDetailsUi(any<String>())
+        verify(view).showTaskDetailsUi(any<String>())
     }
 
     @Test fun completeTask_ShowsTaskMarkedComplete() {
@@ -163,7 +155,7 @@ class TasksPresenterTest {
 
         // Then repository is called and task marked complete UI is shown
         verify(tasksRepository).completeTask(task)
-        verify(tasksView).showTaskMarkedComplete()
+        verify(view).showTaskMarkedComplete()
     }
 
     @Test fun activateTask_ShowsTaskMarkedActive() {
@@ -178,7 +170,7 @@ class TasksPresenterTest {
 
         // Then repository is called and task marked active UI is shown
         verify(tasksRepository).activateTask(task)
-        verify(tasksView).showTaskMarkedActive()
+        verify(view).showTaskMarkedActive()
     }
 
     @Test fun unavailableTasks_ShowsError() {
@@ -192,6 +184,6 @@ class TasksPresenterTest {
         loadTasksCallbackCaptor.value.onDataNotAvailable()
 
         // Then an error message is shown
-        verify(tasksView).showLoadingTasksError()
+        verify(view).showLoadingTasksError()
     }
 }
