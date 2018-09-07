@@ -15,6 +15,7 @@ ext {
     rulesVersion = '1.0.1'
     espressoVersion = '3.0.1'
     roomVersion = "1.0.0"
+    koinVersion = "1.0.0-RC-2"
 }
 
 buildscript {

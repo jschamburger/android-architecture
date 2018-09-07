@@ -28,9 +28,7 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.inOrder
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 /**
@@ -58,7 +56,7 @@ class TasksPresenterTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        tasksPresenter = TasksPresenter(tasksRepository, tasksView)
+        tasksPresenter = TasksPresenter(tasksView)
 
         // The presenter won't update the view unless it's active.
         `when`(tasksView.isActive).thenReturn(true)
@@ -71,7 +69,7 @@ class TasksPresenterTest {
 
     @Test fun createPresenter_setsThePresenterToView() {
         // Get a reference to the class under test
-        tasksPresenter = TasksPresenter(tasksRepository, tasksView)
+        tasksPresenter = TasksPresenter(tasksView)
 
         // Then the presenter is set to the view
         verify(tasksView).presenter = tasksPresenter

@@ -21,14 +21,18 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
-import java.util.ArrayList
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
+import java.util.*
 
 /**
  * Listens to user actions from the UI ([TasksFragment]), retrieves the data and updates the
  * UI as required.
  */
-class TasksPresenter(val tasksRepository: TasksRepository, val tasksView: TasksContract.View)
-    : TasksContract.Presenter {
+class TasksPresenter(val tasksView: TasksContract.View)
+    : TasksContract.Presenter, KoinComponent {
+
+    val tasksRepository : TasksRepository by inject()
 
     override var currentFiltering = TasksFilterType.ALL_TASKS
 

@@ -24,7 +24,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsActivity
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
@@ -61,8 +60,7 @@ class TasksActivity : AppCompatActivity() {
         }
 
         // Create the presenter
-        tasksPresenter = TasksPresenter(Injection.provideTasksRepository(applicationContext),
-                tasksFragment).apply {
+        tasksPresenter = TasksPresenter(tasksFragment).apply {
             // Load previously saved state, if available.
             if (savedInstanceState != null) {
                 currentFiltering = savedInstanceState.getSerializable(CURRENT_FILTERING_KEY)
