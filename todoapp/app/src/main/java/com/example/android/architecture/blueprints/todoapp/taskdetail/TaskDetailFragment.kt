@@ -26,9 +26,10 @@ import android.widget.CheckBox
 import android.widget.TextView
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity
-import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskFragment
+import com.example.android.architecture.blueprints.todoapp.di.Properties.ARGUMENT_EDIT_TASK_ID
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
 import org.koin.android.ext.android.inject
+import org.koin.android.ext.android.setProperty
 
 /**
  * Main UI for the task detail screen.
@@ -118,7 +119,7 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
 
     override fun showEditTask(taskId: String) {
         val intent = Intent(context, AddEditTaskActivity::class.java)
-        intent.putExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID, taskId)
+        setProperty(ARGUMENT_EDIT_TASK_ID, taskId)
         startActivityForResult(intent, REQUEST_EDIT_TASK)
     }
 
