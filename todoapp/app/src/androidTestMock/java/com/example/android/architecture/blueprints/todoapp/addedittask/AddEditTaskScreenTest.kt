@@ -37,7 +37,6 @@ import com.example.android.architecture.blueprints.todoapp.R.id.toolbar
 import com.example.android.architecture.blueprints.todoapp.TestUtils
 import com.example.android.architecture.blueprints.todoapp.data.FakeTasksRemoteDataSource
 import com.example.android.architecture.blueprints.todoapp.data.Task
-import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import org.hamcrest.Description
 import org.junit.Rule
 import org.junit.Test
@@ -90,7 +89,6 @@ import org.junit.runner.RunWith
 
     @Test fun toolbarTitle_editTask_persistsRotation() {
         // Put a task in the repository and start the activity to edit it
-        TasksRepository.destroyInstance()
         FakeTasksRemoteDataSource.getInstance().addTasks(Task("Title1", "", TASK_ID).apply {
             isCompleted = false
         })

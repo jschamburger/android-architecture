@@ -19,10 +19,7 @@ import android.app.Activity
 import android.content.Intent
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.isChecked
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
@@ -30,7 +27,6 @@ import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.TestUtils
 import com.example.android.architecture.blueprints.todoapp.data.FakeTasksRemoteDataSource
 import com.example.android.architecture.blueprints.todoapp.data.Task
-import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import org.hamcrest.core.IsNot.not
 import org.junit.Rule
 import org.junit.Test
@@ -93,7 +89,6 @@ import org.junit.runner.RunWith
      */
     private fun startActivityWithWithStubbedTask(task: Task) {
         // Add a task stub to the fake service api layer.
-        TasksRepository.destroyInstance()
         FakeTasksRemoteDataSource.getInstance().addTasks(task)
 
         // Lazily start the Activity from the ActivityTestRule this time to inject the start Intent

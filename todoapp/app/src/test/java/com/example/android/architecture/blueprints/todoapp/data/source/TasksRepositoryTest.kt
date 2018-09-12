@@ -21,18 +21,13 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.eq
 import com.google.common.collect.Lists
 import org.hamcrest.CoreMatchers.`is`
-import org.junit.After
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertThat
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
-import org.mockito.Mockito.never
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 /**
@@ -71,12 +66,7 @@ class TasksRepositoryTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        tasksRepository = TasksRepository.getInstance(tasksRemoteDataSource,
-                tasksLocalDataSource)
-    }
-
-    @After fun destroyRepositoryInstance() {
-        TasksRepository.destroyInstance()
+        tasksRepository = TasksRepository(tasksRemoteDataSource, tasksLocalDataSource)
     }
 
     @Test fun getTasks_repositoryCachesAfterFirstApiCall() {
