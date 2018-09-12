@@ -4,7 +4,9 @@ import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTa
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskFragment
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskPresenter
 import com.example.android.architecture.blueprints.todoapp.repositoryModule
+import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsContract
 import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsFragment
+import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsPresenter
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailContract
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailFragment
 import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailPresenter
@@ -26,6 +28,7 @@ val appModule = module {
     factory { AddEditTaskPresenter("", false) as AddEditTaskContract.Presenter }
 
     factory { StatisticsFragment() }
+    factory { StatisticsPresenter() as StatisticsContract.Presenter }
 }
 
 val appModules = listOf(repositoryModule, appModule)

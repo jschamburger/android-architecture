@@ -20,16 +20,18 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 
 /**
  * Listens to user actions from the UI ([StatisticsFragment]), retrieves the data and updates
  * the UI as required.
  */
-class StatisticsPresenter(
-        val tasksRepository: TasksRepository
-) : StatisticsContract.Presenter {
+class StatisticsPresenter : StatisticsContract.Presenter, KoinComponent {
 
     override lateinit var view: StatisticsContract.View
+
+    val tasksRepository : TasksRepository by inject()
 
     override fun start() {
         loadStatistics()

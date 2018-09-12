@@ -21,9 +21,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.android.architecture.blueprints.todoapp.Injection
-
 import com.example.android.architecture.blueprints.todoapp.R
+import org.koin.android.ext.android.inject
 
 /**
  * Main UI for the statistics screen.
@@ -32,8 +31,7 @@ class StatisticsFragment : Fragment(), StatisticsContract.View {
 
     private lateinit var statisticsTV: TextView
 
-    override val presenter: StatisticsContract.Presenter = StatisticsPresenter(
-            Injection.provideTasksRepository(this.requireContext()))
+    override val presenter: StatisticsContract.Presenter by inject()
 
     override val isActive: Boolean
         get() = isAdded
