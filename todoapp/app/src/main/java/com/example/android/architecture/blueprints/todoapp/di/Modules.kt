@@ -21,14 +21,21 @@ val appModule = module {
 
     factory { TaskDetailFragment() }
     // TODO: use correct task ID
-    factory { TaskDetailPresenter("") as TaskDetailContract.Presenter }
+    factory { TaskDetailPresenter(getProperty(Properties.EXTRA_TASK_ID)) as TaskDetailContract.Presenter }
 
     factory { AddEditTaskFragment() }
     // TODO: use correct task ID and missing flag
-    factory { AddEditTaskPresenter("", false) as AddEditTaskContract.Presenter }
+    factory { AddEditTaskPresenter(getProperty(Properties.ARGUMENT_EDIT_TASK_ID), false) as AddEditTaskContract.Presenter }
 
     factory { StatisticsFragment() }
     factory { StatisticsPresenter() as StatisticsContract.Presenter }
 }
 
 val appModules = listOf(repositoryModule, appModule)
+
+object Properties {
+    const val CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY"
+    const val EXTRA_TASK_ID = "TASK_ID"
+    const val ARGUMENT_EDIT_TASK_ID = "EDIT_TASK_ID"
+    const val SHOULD_LOAD_DATA_FROM_REPO_KEY = "SHOULD_LOAD_DATA_FROM_REPO_KEY"
+}

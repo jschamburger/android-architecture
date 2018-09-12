@@ -19,8 +19,11 @@ package com.example.android.architecture.blueprints.todoapp.addedittask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.android.architecture.blueprints.todoapp.R
+import com.example.android.architecture.blueprints.todoapp.di.Properties.ARGUMENT_EDIT_TASK_ID
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
+import org.koin.android.ext.android.property
+import org.koin.android.ext.android.setProperty
 
 /**
  * Displays an add or edit task screen.
@@ -29,16 +32,19 @@ class AddEditTaskActivity : AppCompatActivity() {
 
     private lateinit var addEditTaskPresenter: AddEditTaskPresenter
 
+    val taskId by property(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID, "")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.addtask_act)
-        val taskId = intent.getStringExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID)
+
+        setProperty(ARGUMENT_EDIT_TASK_ID, taskId)
 
         // Set up the toolbar.
         setupActionBar(R.id.toolbar) {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
-            setTitle(if (taskId == null) R.string.add_task else R.string.edit_task)
+            setTitle(if (taskId.isEmpty()) R.string.add_task else R.string.edit_task)
         }
 
         val addEditTaskFragment =
@@ -52,10 +58,6 @@ class AddEditTaskActivity : AppCompatActivity() {
                 // Data might not have loaded when the config change happen, so we saved the state.
                 savedInstanceState?.getBoolean(SHOULD_LOAD_DATA_FROM_REPO_KEY) ?: true
 
-
-        // Create the presenter
-        addEditTaskPresenter = AddEditTaskPresenter(taskId,
-                shouldLoadDataFromRepo)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
