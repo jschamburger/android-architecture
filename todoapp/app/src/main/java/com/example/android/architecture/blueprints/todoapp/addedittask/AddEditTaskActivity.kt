@@ -18,7 +18,6 @@ package com.example.android.architecture.blueprints.todoapp.addedittask
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
@@ -56,7 +55,6 @@ class AddEditTaskActivity : AppCompatActivity() {
 
         // Create the presenter
         addEditTaskPresenter = AddEditTaskPresenter(taskId,
-                Injection.provideTasksRepository(applicationContext), addEditTaskFragment,
                 shouldLoadDataFromRepo)
     }
 

@@ -18,20 +18,20 @@ package com.example.android.architecture.blueprints.todoapp.taskdetail
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 
 /**
  * Listens to user actions from the UI ([TaskDetailFragment]), retrieves the data and updates
  * the UI as required.
  */
 class TaskDetailPresenter(
-        private val taskId: String,
-        private val tasksRepository: TasksRepository,
-        private val taskDetailView: TaskDetailContract.View
-) : TaskDetailContract.Presenter {
+        private val taskId: String
+) : TaskDetailContract.Presenter, KoinComponent {
 
-    init {
-        taskDetailView.presenter = this
-    }
+    override lateinit var view: TaskDetailContract.View
+
+    val tasksRepository: TasksRepository by inject()
 
     override fun start() {
         openTask()
@@ -39,14 +39,14 @@ class TaskDetailPresenter(
 
     private fun openTask() {
         if (taskId.isEmpty()) {
-            taskDetailView.showMissingTask()
+            view.showMissingTask()
             return
         }
 
-        taskDetailView.setLoadingIndicator(true)
+        view.setLoadingIndicator(true)
         tasksRepository.getTask(taskId, object : TasksDataSource.GetTaskCallback {
             override fun onTaskLoaded(task: Task) {
-                with(taskDetailView) {
+                with(view) {
                     // The view may not be able to handle UI updates anymore
                     if (!isActive) {
                         return@onTaskLoaded
@@ -57,7 +57,7 @@ class TaskDetailPresenter(
             }
 
             override fun onDataNotAvailable() {
-                with(taskDetailView) {
+                with(view) {
                     // The view may not be able to handle UI updates anymore
                     if (!isActive) {
                         return@onDataNotAvailable
@@ -70,41 +70,41 @@ class TaskDetailPresenter(
 
     override fun editTask() {
         if (taskId.isEmpty()) {
-            taskDetailView.showMissingTask()
+            view.showMissingTask()
             return
         }
-        taskDetailView.showEditTask(taskId)
+        view.showEditTask(taskId)
     }
 
     override fun deleteTask() {
         if (taskId.isEmpty()) {
-            taskDetailView.showMissingTask()
+            view.showMissingTask()
             return
         }
         tasksRepository.deleteTask(taskId)
-        taskDetailView.showTaskDeleted()
+        view.showTaskDeleted()
     }
 
     override fun completeTask() {
         if (taskId.isEmpty()) {
-            taskDetailView.showMissingTask()
+            view.showMissingTask()
             return
         }
         tasksRepository.completeTask(taskId)
-        taskDetailView.showTaskMarkedComplete()
+        view.showTaskMarkedComplete()
     }
 
     override fun activateTask() {
         if (taskId.isEmpty()) {
-            taskDetailView.showMissingTask()
+            view.showMissingTask()
             return
         }
         tasksRepository.activateTask(taskId)
-        taskDetailView.showTaskMarkedActive()
+        view.showTaskMarkedActive()
     }
 
     private fun showTask(task: Task) {
-        with(taskDetailView) {
+        with(view) {
             if (taskId.isEmpty()) {
                 hideTitle()
                 hideDescription()

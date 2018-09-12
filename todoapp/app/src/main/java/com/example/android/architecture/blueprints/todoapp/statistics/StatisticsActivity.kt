@@ -22,8 +22,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-
-import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
@@ -59,9 +57,6 @@ class StatisticsActivity : AppCompatActivity() {
                 ?: StatisticsFragment.newInstance().also {
             replaceFragmentInActivity(it, R.id.contentFrame)
         }
-
-        StatisticsPresenter(
-                Injection.provideTasksRepository(applicationContext), statisticsFragment)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

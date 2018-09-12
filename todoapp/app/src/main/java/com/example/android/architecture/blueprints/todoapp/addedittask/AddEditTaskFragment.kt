@@ -25,17 +25,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
+import org.koin.android.ext.android.inject
 
 /**
  * Main UI for the add task screen. Users can enter a task title and description.
  */
 class AddEditTaskFragment : Fragment(), AddEditTaskContract.View {
 
-    // TODO inject
-    override val presenter = AddEditTaskPresenter(arguments!!.getString(ARGUMENT_EDIT_TASK_ID) as String, Injection.provideTasksRepository(this.requireContext()), this, false)
+    override val presenter by inject<AddEditTaskContract.Presenter>()
+
     override var isActive = false
         get() = isAdded
 
@@ -45,6 +45,7 @@ class AddEditTaskFragment : Fragment(), AddEditTaskContract.View {
 
     override fun onResume() {
         super.onResume()
+        presenter.view = this
         presenter.start()
     }
 

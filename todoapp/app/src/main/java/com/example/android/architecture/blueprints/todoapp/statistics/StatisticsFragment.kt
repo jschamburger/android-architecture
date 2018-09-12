@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.android.architecture.blueprints.todoapp.Injection
 
 import com.example.android.architecture.blueprints.todoapp.R
 
@@ -31,7 +32,8 @@ class StatisticsFragment : Fragment(), StatisticsContract.View {
 
     private lateinit var statisticsTV: TextView
 
-    override lateinit var presenter: StatisticsContract.Presenter
+    override val presenter: StatisticsContract.Presenter = StatisticsPresenter(
+            Injection.provideTasksRepository(this.requireContext()))
 
     override val isActive: Boolean
         get() = isAdded
@@ -45,6 +47,7 @@ class StatisticsFragment : Fragment(), StatisticsContract.View {
 
     override fun onResume() {
         super.onResume()
+        presenter.view = this
         presenter.start()
     }
 

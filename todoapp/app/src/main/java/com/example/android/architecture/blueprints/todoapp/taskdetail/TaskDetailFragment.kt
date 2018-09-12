@@ -24,11 +24,11 @@ import android.support.v4.app.Fragment
 import android.view.*
 import android.widget.CheckBox
 import android.widget.TextView
-import com.example.android.architecture.blueprints.todoapp.Injection
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskFragment
 import com.example.android.architecture.blueprints.todoapp.util.showSnackBar
+import org.koin.android.ext.android.inject
 
 /**
  * Main UI for the task detail screen.
@@ -39,15 +39,14 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
     private lateinit var detailDescription: TextView
     private lateinit var detailCompleteStatus: CheckBox
 
-    // TODO Inject
-    override val presenter = TaskDetailPresenter(arguments!!.get(ARGUMENT_TASK_ID) as String, Injection.provideTasksRepository(this.requireContext()),
-            this)
+    override val presenter by inject<TaskDetailContract.Presenter>()
 
     override var isActive: Boolean = false
         get() = isAdded
 
     override fun onResume() {
         super.onResume()
+        presenter.view = this
         presenter.start()
     }
 
