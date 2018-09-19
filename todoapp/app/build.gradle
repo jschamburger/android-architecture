@@ -108,4 +108,5 @@ dependencies {
 
     // Koin
     implementation "org.koin:koin-android:$rootProject.koinVersion"
+    implementation "org.koin:koin-android-scope:$rootProject.koinVersion"
 }

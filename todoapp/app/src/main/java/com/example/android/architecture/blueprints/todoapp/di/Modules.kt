@@ -17,11 +17,10 @@ import org.koin.dsl.module.module
 
 val appModule = module {
     factory { TasksFragment() }
-    factory { TasksPresenter() as TasksContract.Presenter }
+    factory<TasksContract.Presenter> { TasksPresenter() }
 
-    factory { TaskDetailFragment() }
-    // TODO: use correct task ID
-    factory { TaskDetailPresenter(getProperty(Properties.EXTRA_TASK_ID)) as TaskDetailContract.Presenter }
+    scope("TaskDetailActivity")  { TaskDetailFragment() }
+    scope<TaskDetailContract.Presenter>("TaskDetailActivity")  { TaskDetailPresenter(getProperty(Properties.EXTRA_TASK_ID)) }
 
     factory { AddEditTaskFragment() }
     // TODO: use correct task ID and missing flag

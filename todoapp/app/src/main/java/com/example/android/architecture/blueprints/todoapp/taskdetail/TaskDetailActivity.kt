@@ -21,6 +21,8 @@ import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.replaceFragmentInActivity
 import com.example.android.architecture.blueprints.todoapp.util.setupActionBar
 import org.koin.android.ext.android.inject
+import org.koin.android.scope.ext.android.bindScope
+import org.koin.android.scope.ext.android.getOrCreateScope
 
 /**
  * Displays task details screen.
@@ -33,6 +35,8 @@ class TaskDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.taskdetail_act)
+
+        bindScope(getOrCreateScope("TaskDetailActivity"))
 
         // Set up the toolbar.
         setupActionBar(R.id.toolbar) {
